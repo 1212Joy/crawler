@@ -51,12 +51,12 @@ public class KaoLaPipelineTest {
 
         spider.addUrl(startListUrl);
         spider.thread(5).run();
-       /* JSONArray jsonObject = JSONArray.fromObject(milkList);
+        String jsonObjectStr = JSON.toJSONString(milkList);
         System.out.println("【-------------start-------------长度】"+milkList.size());
-        System.out.println(jsonObject.toString());
-        System.out.println("【-------------end-------------】");*/
+        System.out.println(jsonObjectStr);
+        System.out.println("【-------------end-------------】");
 
-        insertDB(milkList);
+     //   insertDB(milkList);
     }
 
     @Test
@@ -78,12 +78,12 @@ public class KaoLaPipelineTest {
         spider.addUrl(startListUrl);
         spider.thread(5).run();
 
-     /*   JSONArray jsonObject = JSONArray.fromObject(johnsonList);
+        String jsonObjectStr = JSON.toJSONString(johnsonList);
         System.out.println("【-------------start-------------长度】"+johnsonList.size());
-        System.out.println(jsonObject.toString());
-        System.out.println("【-------------end-------------】");*/
+        System.out.println(jsonObjectStr);
+        System.out.println("【-------------end-------------】");
 
-        insertDB(johnsonList);
+       // insertDB(johnsonList);
     }
     @Test
     public void KaoLaPGProcess() {
