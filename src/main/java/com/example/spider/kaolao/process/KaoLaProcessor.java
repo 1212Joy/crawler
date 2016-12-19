@@ -1,6 +1,4 @@
-package com.example.spider.process;
-
-import com.example.spider.process.BaseProcessor;
+package com.example.spider.kaolao.process;
 
 /**
  * Created by zhuzhihang on 2016/12/13.

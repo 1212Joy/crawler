@@ -1,4 +1,4 @@
-package com.example.spider.repo;
+package com.example.spider.kaolao.repo;
 
 import lombok.Data;
 import us.codecraft.webmagic.model.annotation.ExtractBy;

@@ -6,7 +6,7 @@ import com.example.configuration.ApplicationConstants;
 /**
  * Created by zhuzhihang on 2016/12/13.
  */
-public class KaoLaDetail extends CrawlerProps {
+public class KaoLaDetail extends Crawler {
     //是否自营
     private boolean self;
 

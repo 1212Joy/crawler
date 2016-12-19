@@ -1,4 +1,4 @@
-package com.example.spider.process;
+package com.example.spider.kaolao.process;
 
 import lombok.extern.slf4j.Slf4j;
 import us.codecraft.webmagic.Page;

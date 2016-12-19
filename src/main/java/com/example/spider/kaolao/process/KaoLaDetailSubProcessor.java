@@ -1,4 +1,4 @@
-package com.example.spider.process;
+package com.example.spider.kaolao.process;
 
 import com.example.vo.KaoLaDetail;
 import lombok.extern.slf4j.Slf4j;

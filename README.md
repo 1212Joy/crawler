@@ -18,7 +18,11 @@
 实现目标 - 以请求网易考拉获取奶粉,强生沐浴露,保洁产品信息为例
 
 ##操作步骤：
+
 执行case - KaoLaPipelineTest
 1. KaoLaMilkProcess() - 奶粉 - http://www.kaola.com/category/2620.html
 2. KaoLaJohnsonProcess() - 强生 - http://www.kaola.com/brand/1208-5119.html
 3. KaoLaPGProcess() - 宝洁 - http://www.kaola.com/brand/1146.html
+
+##更新
+20161219 - 添加京东获取宝洁商品信息

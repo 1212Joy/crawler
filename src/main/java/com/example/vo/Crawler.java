@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by wanghongmeng on 2016/11/23.
  */
 @Data
-public class CrawlerProps {
+public class Crawler {
     private int id;
     //商品编号
     private String platformId;

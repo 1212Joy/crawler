@@ -3,10 +3,11 @@ package com.example.spider.pipeline;
 
 import com.alibaba.fastjson.JSON;
 import com.example.configuration.ApplicationConstants;
-import com.example.spider.process.KaoLaDetailSubProcessor;
-import com.example.spider.process.KaoLaListSubProcessor;
-import com.example.spider.process.KaoLaProcessor;
-import com.example.vo.CrawlerProps;
+import com.example.spider.kaolao.pipeline.KaoLaPipeline;
+import com.example.spider.kaolao.process.KaoLaDetailSubProcessor;
+import com.example.spider.kaolao.process.KaoLaListSubProcessor;
+import com.example.spider.kaolao.process.KaoLaProcessor;
+import com.example.vo.Crawler;
 import com.example.vo.KaoLaDetail;
 import org.junit.Test;
 import us.codecraft.webmagic.Site;
@@ -118,21 +119,21 @@ public class KaoLaPipelineTest {
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://192.168.0.221:3306/glp?useUnicode=true&characterEncoding=utf-8",
                     "simba", "BeGYVXnw7&Kj@A!j");
-            for (CrawlerProps crawlerProps:crawlerPropss) {
+            for (Crawler crawler :crawlerPropss) {
                 PreparedStatement preparedStatementInsert = connection.prepareStatement("INSERT INTO glp.crawler_props (`platform_Id`, `url`, `title`, `price`, `sku`, `brand`, `category`, `shopName`, `shopType`, `weight`, `sales`, `origin`,`sourceArea`) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                preparedStatementInsert.setString(1, crawlerProps.getPlatformId());
-                preparedStatementInsert.setString(2, crawlerProps.getUrl());
-                preparedStatementInsert.setString(3, crawlerProps.getTitle());
-                preparedStatementInsert.setString(4, crawlerProps.getPrice());
-                preparedStatementInsert.setString(5, crawlerProps.getSku());
-                preparedStatementInsert.setString(6, crawlerProps.getBrand());
-                preparedStatementInsert.setString(7, crawlerProps.getCategory());
-                preparedStatementInsert.setString(8, crawlerProps.getShopName());
-                preparedStatementInsert.setString(9, crawlerProps.getShopType());
-                preparedStatementInsert.setString(10, crawlerProps.getWeight());
-                preparedStatementInsert.setString(11, crawlerProps.getSales());
-                preparedStatementInsert.setString(12, crawlerProps.getOrigin());
-                preparedStatementInsert.setString(13, crawlerProps.getSourceArea());
+                preparedStatementInsert.setString(1, crawler.getPlatformId());
+                preparedStatementInsert.setString(2, crawler.getUrl());
+                preparedStatementInsert.setString(3, crawler.getTitle());
+                preparedStatementInsert.setString(4, crawler.getPrice());
+                preparedStatementInsert.setString(5, crawler.getSku());
+                preparedStatementInsert.setString(6, crawler.getBrand());
+                preparedStatementInsert.setString(7, crawler.getCategory());
+                preparedStatementInsert.setString(8, crawler.getShopName());
+                preparedStatementInsert.setString(9, crawler.getShopType());
+                preparedStatementInsert.setString(10, crawler.getWeight());
+                preparedStatementInsert.setString(11, crawler.getSales());
+                preparedStatementInsert.setString(12, crawler.getOrigin());
+                preparedStatementInsert.setString(13, crawler.getSourceArea());
                 preparedStatementInsert.execute();
             }
 
