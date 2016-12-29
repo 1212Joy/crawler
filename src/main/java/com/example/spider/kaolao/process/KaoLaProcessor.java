@@ -34,7 +34,7 @@ public class KaoLaProcessor extends BaseProcessor {
             "var e = {};\n" +
             "e.price = g.actualCurrentPrice;\n" +
             "e.title = g.title;\n" +
-            "e.platformId = g.skuList[0].skuId;\n" +
+            "e.originKey = g.skuList[0].skuId;\n" +
             "e.brand = g.brandName;\n" +
             "e.sku = method.getInfo(\"358\");\n" +
             "e.self = g.self;\n" +
@@ -71,7 +71,7 @@ public class KaoLaProcessor extends BaseProcessor {
             "var e = {};\n" +
             "e.price = g.actualCurrentPrice;\n" +
             "e.title = g.title;\n" +
-            "e.platformId = g.skuList[0].skuId;\n" +
+            "e.originKey = g.skuList[0].skuId;\n" +
             "e.brand = g.brandName;\n" +
             "e.sku = method.getInfo(\"100202\");\n" +
             "e.self = g.self;\n" +
@@ -108,7 +108,7 @@ public class KaoLaProcessor extends BaseProcessor {
             "var e = {};\n" +
             "e.price = g.actualCurrentPrice;\n" +
             "e.title = g.title;\n" +
-            "e.platformId = g.skuList[0].skuId;\n" +
+            "e.originKey = g.skuList[0].skuId;\n" +
             "e.brand = g.brandName;\n" +
             "e.sku = method.getInfo(\"100341\");\n" +
             "e.self = g.self;\n" +

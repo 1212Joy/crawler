@@ -9,5 +9,5 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class JingDongProcessor extends BaseProcessor {
-    String detailUrl = "http://item.jd.com/\\w+.html";
+    String detailUrl = "(http|ftp|https)://item.jd.com/\\w+.html";
 }

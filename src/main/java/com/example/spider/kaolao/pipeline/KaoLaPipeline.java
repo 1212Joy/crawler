@@ -38,11 +38,11 @@ public class KaoLaPipeline implements Pipeline {
         if(null == result.getSales() ){
             result.setSales("0");
         }
-        result.setPlatformId(result.getPlatformId().split("-")[0]);
+        result.setOriginKey(result.getOriginKey().split("-")[0]);
         result.update();
         result.setCategory(category.toString());
         result.setOrigin(origin.toString());
-        result.setCreatedAt(new Date());
+        result.setCrawledAt(new Date());
 
         String json = JSON.toJSONString(result);
         size.getAndIncrement();

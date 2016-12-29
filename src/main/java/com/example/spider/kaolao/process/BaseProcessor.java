@@ -35,4 +35,21 @@ public class BaseProcessor {
 
         }
     }
+
+    public void extractLinks(Page page,String xPath, Pattern urlPattern) {
+
+        List<String>  links =  page.getHtml().xpath(xPath).all();
+        for (String link : links) {
+            boolean b = link.startsWith("http");
+            if(!b){
+                link = "http:"+link;
+            }
+            Matcher matcher = urlPattern.matcher(link);
+            if (matcher.find()) {
+                Request request = new Request(matcher.group(1));
+                page.addTargetRequest(request); //save the request url which we need
+                log.info("[new request] - [link] = {}", link);
+            }
+        }
+    }
 }

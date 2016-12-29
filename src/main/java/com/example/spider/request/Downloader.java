@@ -1,8 +1,10 @@
 package com.example.spider.request;
 
+import com.example.framework.utils.ThreadUtils;
 import com.google.common.collect.Sets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.*;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -22,7 +24,12 @@ import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.*;
+import org.apache.http.impl.client.BasicAuthCache;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.HttpContext;
@@ -47,6 +54,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 
 /**
@@ -105,7 +113,37 @@ public class Downloader extends AbstractDownloader {
     public String get(String url) throws Exception {
         HttpUriRequest request = RequestBuilder.get(url).build();
         CloseableHttpResponse httpResponse = execute(request, null);
-        return EntityUtils.toString(httpResponse.getEntity());
+        String s = EntityUtils.toString(httpResponse.getEntity());
+        return s;
+    }
+
+    public String get(String url, int maxTimes) throws Exception {
+        for (int i = 1; i < maxTimes; i++) {
+            try {
+                return get(url);
+            } catch (Exception e) {
+                logger.error("download failed : time -> {}", i);
+                ThreadUtils.sleep(500);
+            }
+        }
+
+        return get(url);
+    }
+
+    public String get(String url, int maxTimes, Function<String, String> function) throws Exception {
+        String temp = "";
+        for (int i = 1; i < maxTimes; i++) {
+            try {
+                temp = get(url);
+
+                return function.apply(temp);
+            } catch (Exception e) {
+                logger.error("download failed : time -> {}, temp -> {}", i, temp);
+                logger.error("download exception e {}", ExceptionUtils.getMessage(e));
+                ThreadUtils.sleep(500);
+            }
+        }
+        return function.apply(get(url));
     }
 
     public CloseableHttpResponse execute(HttpUriRequest httpUriRequest, Site site) throws IOException {
@@ -146,9 +184,9 @@ public class Downloader extends AbstractDownloader {
                 return page;
             } else {
                 logger.warn("code error " + statusCode + "\t" + request.getUrl());
-                return null;
+                throw new IllegalArgumentException("status code error");
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.warn("download page " + request.getUrl() + " error", e);
             if (site.getCycleRetryTimes() > 0) {
                 return addToCycleRetry(request, site);
@@ -258,7 +296,7 @@ public class Downloader extends AbstractDownloader {
         String value = httpResponse.getEntity().getContentType().getValue();
         charset = UrlUtils.getCharset(value);
         if (StringUtils.isNotBlank(charset)) {
-            logger.debug("Auto get charset: {}", charset);
+            // logger.debug("Auto get charset: {}", charset);
             return charset;
         }
         // use default charset to decode first time
@@ -297,30 +335,30 @@ public class Downloader extends AbstractDownloader {
 
     private CloseableHttpClient generateClient(Site site) {
         HttpClientBuilder httpClientBuilder = HttpClients.custom().setConnectionManager(connectionManager);
-        if (site != null && site.getUserAgent() != null) {
-            httpClientBuilder.setUserAgent(site.getUserAgent());
-        } else {
-            httpClientBuilder.setUserAgent("");
-        }
-        if (site == null || site.isUseGzip()) {
-            httpClientBuilder.addInterceptorFirst(new HttpRequestInterceptor() {
-
-                public void process(
-                        final HttpRequest request,
-                        final HttpContext context) throws HttpException, IOException {
-                    if (!request.containsHeader("Accept-Encoding")) {
-                        request.addHeader("Accept-Encoding", "gzip");
-                    }
-
-                }
-            });
-        }
-        SocketConfig socketConfig = SocketConfig.custom().setSoKeepAlive(true).setTcpNoDelay(true).build();
-        httpClientBuilder.setDefaultSocketConfig(socketConfig);
-        if (site != null) {
-            httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(site.getRetryTimes(), true));
-        }
-        generateCookie(httpClientBuilder, site);
+        // if (site != null && site.getUserAgent() != null) {
+        //     httpClientBuilder.setUserAgent(site.getUserAgent());
+        // } else {
+        //     httpClientBuilder.setUserAgent("");
+        // }
+        // if (site == null || site.isUseGzip()) {
+        //     httpClientBuilder.addInterceptorFirst(new HttpRequestInterceptor() {
+        //
+        //         public void process(
+        //                 final HttpRequest request,
+        //                 final HttpContext context) throws HttpException, IOException {
+        //             if (!request.containsHeader("Accept-Encoding")) {
+        //                 request.addHeader("Accept-Encoding", "gzip");
+        //             }
+        //
+        //         }
+        //     });
+        // }
+        // SocketConfig socketConfig = SocketConfig.custom().setSoKeepAlive(true).setTcpNoDelay(true).build();
+        // httpClientBuilder.setDefaultSocketConfig(socketConfig);
+        // if (site != null) {
+        //     httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(site.getRetryTimes(), true));
+        // }
+        // generateCookie(httpClientBuilder, site);
 
         if (enableProxy) {
             updateProvider(httpClientBuilder);

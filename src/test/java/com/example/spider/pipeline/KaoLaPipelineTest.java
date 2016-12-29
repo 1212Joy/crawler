@@ -121,7 +121,7 @@ public class KaoLaPipelineTest {
                     "simba", "BeGYVXnw7&Kj@A!j");
             for (Crawler crawler :crawlerPropss) {
                 PreparedStatement preparedStatementInsert = connection.prepareStatement("INSERT INTO glp.crawler_props (`platform_Id`, `url`, `title`, `price`, `sku`, `brand`, `category`, `shopName`, `shopType`, `weight`, `sales`, `origin`,`sourceArea`) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                preparedStatementInsert.setString(1, crawler.getPlatformId());
+                preparedStatementInsert.setString(1, crawler.getOriginKey());
                 preparedStatementInsert.setString(2, crawler.getUrl());
                 preparedStatementInsert.setString(3, crawler.getTitle());
                 preparedStatementInsert.setString(4, crawler.getPrice());
@@ -165,10 +165,10 @@ public class KaoLaPipelineTest {
                     if(b){
                         kaoLaDetailStr = lineTxt.split("=")[1];
                         KaoLaDetail kl = JSON.parseObject(kaoLaDetailStr, KaoLaDetail.class);
-                        kl.setPlatformId(kl.getPlatformId().split("-")[0]);
+                        kl.setOriginKey(kl.getOriginKey().split("-")[0]);
                         PreparedStatement preparedStatementInsert = connection.prepareStatement("update glp.crawler_props set price=? where platform_Id=?");
                         preparedStatementInsert.setString(1,kl.getPrice());
-                        preparedStatementInsert.setString(2,kl.getPlatformId());
+                        preparedStatementInsert.setString(2,kl.getOriginKey());
                         preparedStatementInsert.executeUpdate();
                     }
                     System.out.println(kaoLaDetailStr);

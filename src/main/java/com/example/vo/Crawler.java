@@ -11,7 +11,7 @@ import java.util.Date;
 public class Crawler {
     private int id;
     //商品编号
-    private String platformId;
+    private String originKey;
     //页面url
     private String url;
     //标题
@@ -36,6 +36,6 @@ public class Crawler {
     private String sourceArea;
     //抓取来源，枚举ApplicationConstants.Origin
     private String origin;
-    private Date createdAt;
+    private Date crawledAt;
     private int version;
 }

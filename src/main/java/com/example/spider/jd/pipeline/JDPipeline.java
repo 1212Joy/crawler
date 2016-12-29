@@ -41,7 +41,7 @@ public class JDPipeline implements Pipeline {
             // Class.forName("com.mysql.jdbc.Driver");
             // Connection connection = DriverManager.getConnection(url, user, password);
             PreparedStatement statement = connection.prepareStatement("INSERT INTO glp.crawler_props (`platform_Id`, `url`, `title`, `price`, `sku`, `brand`, `category`, `shopName`, `shopType`, `weight`, `sales`, `origin`,`sourceArea`) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            statement.setString(1, result.getPlatformId());
+            statement.setString(1, result.getOriginKey());
             statement.setString(2, result.getUrl());
             statement.setString(3, result.getTitle());
             statement.setString(4, result.getPrice());

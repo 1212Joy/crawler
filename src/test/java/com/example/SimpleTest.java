@@ -14,13 +14,13 @@ public class SimpleTest {
     @Test
     public void fastjsonTest() {
         Crawler crawler = new Crawler();
-        crawler.setPlatformId("555");
+        crawler.setOriginKey("555");
         crawler.setSales("666");
-        crawler.setCreatedAt(new Date());
+        crawler.setCrawledAt(new Date());
          String jsonString = JSON.toJSONString(crawler);
         System.out.println("[zzj - print] : "+ jsonString);
         Crawler crawlerTrans = JSON.parseObject(jsonString, Crawler.class);
-        System.out.println("[zzj - print] : "+ crawlerTrans.getCreatedAt());
+        System.out.println("[zzj - print] : "+ crawlerTrans.getCrawledAt());
 
     }
 }

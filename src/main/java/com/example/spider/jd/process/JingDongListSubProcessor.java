@@ -15,16 +15,25 @@ import java.util.regex.Pattern;
 @Slf4j
 public class JingDongListSubProcessor extends JingDongProcessor implements SubPageProcessor {
 
+    private String listUrl;
+
+    public JingDongListSubProcessor(String listUrlPattern) {
+        this.listUrl = listUrlPattern;
+    }
+
     @Override
     public MatchOther processPage(Page page) {
-        // String detailUrl = "http://item.jd.com/\\w+.html";
-        String detailSourceRegion = "//div[@class='jSearchList']/div/ul/li/div/div[@class='jGoodsInfo']/div[@class='jDesc']";
         log.info("[列表页解析] - [page] = {}", page.getUrl());
+        //detail 1 - 京东自营店铺
+        String detailSourceRegion1 ="//div[@class='jScrollWrap']/ul/li/@data-href";  //li/div[@class='gl-i-wrap']/div[@class='p-img']/a
+        //detail 2 - 京东搜索详情
+        String detailSourceRegion2 ="//div[@class='gl-i-wrap']/div[@class='p-img']/a/@href";//div[@class='gl-i-wrap']/div[@class='p-img']/a/@href
         log.info("[获取详细地址] - [detailUrl] = {}", detailUrl);
-        extractLinks(page, new XpathSelector(detailSourceRegion), Pattern.compile("(" + detailUrl.replace(".", "\\.") + ")"));
+        extractLinks(page, detailSourceRegion1, Pattern.compile("(" + detailUrl.replace(".", "\\.") + ")"));
+        extractLinks(page, detailSourceRegion2, Pattern.compile("(" + detailUrl.replace(".", "\\.") + ")"));
         // TODO: 2016/12/15 no more pages now
-        // log.info("[获取列表地址] - [detailUrl] = {}", listUrl);
-        // extractLinks(page, new XpathSelector(listSourceRegion), Pattern.compile("(" + listUrl.replace(".", "\\.") + ")"));
+       /*  log.info("[获取列表地址] - [detailUrl] = {}", listUrl);
+         extractListUrls(page,"", Pattern.compile("(" + listUrl.replace(".", "\\.") + ")"));*/
 
         page.getResultItems().setSkip(true);
         return null;
@@ -32,7 +41,6 @@ public class JingDongListSubProcessor extends JingDongProcessor implements SubPa
 
     @Override
     public boolean match(Request page) {
-        String listUrl = "http://mall.jd.hk/advance_search-610652-1000014861-1000014861-0-0-0-1-1-60.html[^\"'#]*";
         return new PlainText(page.getUrl()).regex(listUrl).match();
     }
 }
